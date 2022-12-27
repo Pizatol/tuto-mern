@@ -25,6 +25,11 @@ export default function Home() {
         Axios.post("http://localhost:3001/addFriend", {
             name: friendName,
             age: friendAge,
+        }).then((response) => {
+            setListFriend([
+                ...listFriend,
+                { _id: response.data._id, name: friendName, age: friendAge },
+            ]);
         });
 
         setFriendAge("");
@@ -32,7 +37,7 @@ export default function Home() {
     };
 
     // UPDATE
-    const updateAge =  (id) => {
+    const updateAge = (id) => {
         // prompt ouvre une fenetre pour entrer une nouvelle info
         const newAge = prompt("Enter new age : ");
 
@@ -40,25 +45,23 @@ export default function Home() {
             newAge: newAge,
             id: id,
         }).then(() => {
-           setListFriend(listFriend.map(val => 
-            (
-                val._id === id ? {_id : id, name : val.name, age : newAge} : val 
-               )
-            ))
-        })
+            setListFriend(
+                listFriend.map((val) =>
+                    val._id === id
+                        ? { _id: id, name: val.name, age: newAge }
+                        : val
+                )
+            );
+        });
     };
 
-// DELETE
+    // DELETE
 
-const handleDelete =  (id) => {
-    Axios.delete(`http://localhost:3001/delete/${id}`).
-    then(() => {
-        setListFriend(listFriend.filter(val => (
-            val._id !== id
-        )))
-    })
-   
-}
+    const handleDelete = (id) => {
+        Axios.delete(`http://localhost:3001/delete/${id}`).then(() => {
+            setListFriend(listFriend.filter((val) => val._id !== id));
+        });
+    };
 
     return (
         <div className={css.global_container}>
@@ -111,7 +114,9 @@ const handleDelete =  (id) => {
                             Update Age
                         </button>
 
-                        <button onClick={() => handleDelete(value._id)} >Delete</button>
+                        <button onClick={() => handleDelete(value._id)}>
+                            Delete
+                        </button>
                     </div>
                 ))}
             </div>
