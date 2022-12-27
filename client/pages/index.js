@@ -32,15 +32,34 @@ export default function Home() {
     };
 
     // UPDATE
-    const updateAge = async (id) => {
+    const updateAge =  (id) => {
         // prompt ouvre une fenetre pour entrer une nouvelle info
         const newAge = prompt("Enter new age : ");
 
         Axios.put("http://localhost:3001/update", {
             newAge: newAge,
             id: id,
-        });
+        }).then(() => {
+           setListFriend(listFriend.map(val => 
+            (
+                val._id === id ? {_id : id, name : val.name, age : newAge} : val 
+               )
+            ))
+        })
     };
+
+// DELETE
+
+const handleDelete =  (id) => {
+    Axios.delete(`http://localhost:3001/delete/${id}`).
+    then(() => {
+        setListFriend(listFriend.filter(val => (
+            val._id !== id
+        )))
+    })
+   
+}
+
     return (
         <div className={css.global_container}>
             <Head>
@@ -92,7 +111,7 @@ export default function Home() {
                             Update Age
                         </button>
 
-                        <button>Delete</button>
+                        <button onClick={() => handleDelete(value._id)} >Delete</button>
                     </div>
                 ))}
             </div>
