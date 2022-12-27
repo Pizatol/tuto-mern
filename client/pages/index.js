@@ -71,7 +71,7 @@ export default function Home() {
                 {listFriend.map((value, index) => (
                     <div className={css.friend_card} key={index}>
                         <h1>{value.name}</h1>
-                        <p>{value.age} </p>
+                        <p>{value.age} !</p>
                     </div>
                 ))}
             </div>
