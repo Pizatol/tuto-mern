@@ -13,13 +13,14 @@ export default function Home() {
         // READ DATA
         Axios.get("http://localhost:3001/read")
             .then((response) => {
-                setListFriend(response.data)
+                setListFriend(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
     }, []);
 
+    // ADD
     const addFriend = async () => {
         Axios.post("http://localhost:3001/addFriend", {
             name: friendName,
@@ -28,6 +29,17 @@ export default function Home() {
 
         setFriendAge("");
         setFriendName("");
+    };
+
+    // UPDATE
+    const updateAge = async (id) => {
+        // prompt ouvre une fenetre pour entrer une nouvelle info
+        const newAge = prompt("Enter new age : ");
+
+        Axios.put("http://localhost:3001/update", {
+            newAge: newAge,
+            id: id,
+        });
     };
     return (
         <div className={css.global_container}>
@@ -72,6 +84,15 @@ export default function Home() {
                     <div className={css.friend_card} key={index}>
                         <h1>{value.name}</h1>
                         <p>{value.age} !</p>
+                        <button
+                            onClick={() => updateAge(value._id)}
+                            className={css.submitButton}
+                        >
+                            {" "}
+                            Update Age
+                        </button>
+
+                        <button>Delete</button>
                     </div>
                 ))}
             </div>
